@@ -1,0 +1,214 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Contact us | Corporate creations</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cant determine what to reward your employees with? Take a spin and let us know what you can find here!">
+    <meta name="keywords" content="Corporate creation,Gifts,Corporate gifts,Your logo,Your logo here,Your brand here,">
+    <meta name="author" content="ibn Mohammed">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="icon" href="../assets/images/common/favicon.png" type="image/gif" sizes="16x16">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+
+
+    <link rel="stylesheet" href="../assets/styles/form.css"> 
+    <link rel="stylesheet" href="../assets/styles/contacts.css">
+
+    <script type="text/javascript" src="../assets/scripts/products.js"></script>
+    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("user_OmzFcFvTXeLQ4N4oekkgp");
+       })();
+    </script>
+
+<script type="text/javascript"
+src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.0/dist/email.min.js">
+</script>
+<script type="text/javascript">
+(function(){
+emailjs.init("user_OmzFcFvTXeLQ4N4oekkgp");
+})();
+</script>
+
+    <style>
+        
+    </style>
+
+</head>
+
+<body ng-app="myApp" ng-controller="namesCtrl">
+
+        <form id="contactForm">
+                <input type="hidden" name="contact_number">
+                <label>Name</label>
+                <input type="text" name="user_name">
+                <label>Email</label>
+                <input type="email" name="user_email">
+                <label>Message</label>
+                <textarea name="message"></textarea>
+                <input type="submit" value="Send">
+            </form>
+
+
+
+    <script type="text/javascript" src="../assets/scripts/ap-scroll-top.js"></script>
+
+
+    <script>
+        function initMap() {
+            var myLatLng = { lat: 17.398995, lng: 78.424397 };
+
+            var mapMarker = {
+                url: "../assets/images/map-marker.png", // url
+                scaledSize: new google.maps.Size(50, 50) // scaled size
+            };
+
+            var map = new google.maps.Map(document.getElementById('googleMap'), {
+                zoom: 15,
+                center: myLatLng
+            });
+            var image = '../assets/images/map-marker.png';
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: 'Corpotate creations',
+                icon: mapMarker
+            });
+        }       
+        
+        
+        var template_params = {
+            "reply_to":      "reply_to_value",
+            "from_name":     "from_name_value",
+            "contactName":   "contactName_value",
+            "contactMsg":    "contactMsg_value",
+            "contactNumber": "contactNumber_value",
+            "contactEmail":  "contactEmail_value",
+            "selectedProduct":  "selectedProduct_value"
+        }
+
+        var service_id = "gmail";
+        var template_id = "template_K8SknBg8";
+
+        var myform = $("form#contactForm");
+var successMessage = $("#success");
+var failureMessage = $("#failure");
+myform.submit(function(event){
+	event.preventDefault();
+
+	var params = myform.serializeArray().reduce(function(obj, item) {
+     obj[item.name] = item.value;
+     return obj;
+  }, {});
+
+  var service_id = "default_service";
+
+  var template_id= "template_eHYGBHM7";
+  var validate = 0;
+
+  if(params.contactName == ''){
+    myform.find("#errorName").show();
+  }else{
+    myform.find("#errorName").hide();
+    validate++;
+  }
+
+  if(params.contactNumber == ''){
+    myform.find("#errorNumber").show();
+    myform.find("#errorIfNotNumber").hide();
+  }else{
+    myform.find("#errorNumber").hide();
+    validate++;
+  }
+
+  if((!$.isNumeric(params.contactNumber)) && (params.contactNumber != '')){
+    myform.find("#errorIfNotNumber").show();
+  }else{
+    myform.find("#errorIfNotNumber").hide();
+    validate++;
+  }
+
+  if(params.contactEmail == ''){
+    myform.find("#errorEmail").show();
+  }else{
+    myform.find("#errorEmail").hide();
+    validate++;
+  }
+
+  if(params.selectedProduct == ''){
+    params.selectedProduct = 'None';
+  }
+
+  if(params.contactMsg_value == ''){
+    params.contactMsg_value = 'User has entered no message!';
+  }
+
+  if(validate != 4){
+      validate = 0;
+      return;
+  }
+
+  myform.find(".button").text("Submitting...");
+  emailjs.send(service_id, template_id, params)
+  	.then(function(){
+        myform.find(".button").text("Submit");
+        successMessage.show();
+        myform.hide();
+     }, function(err) {
+        myform.find(".button").text("Submit");
+        console.log("Send email failed!\r\n Response:\n " +JSON.stringify(err));
+        failureMessage.show();
+        myform.hide();
+    });
+
+  return false;
+});
+
+function backToForm(){
+    var myform = $("form#contactForm");
+    var successMessage = $("#success");
+    var failureMessage = $("#failure");
+
+    myform.show();
+    failureMessage.hide();
+    successMessage.hide();
+
+    myform.find("#contactName").val('');
+    myform.find("#contactNumber").val('');
+    myform.find("#contactEmail").val('');
+    myform.find("#selectedProduct").val('');
+    myform.find("#contactMsg").val('');
+}
+    </script>
+
+  
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8ORbNcU8WbywqjG23_tCAYS7iRlJhjno&callback=initMap"></script>
+    <script type="text/javascript" src="../assets/scripts/header.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="../assets/scripts/common.js"></script>
+    <script type="text/javascript" src="../assets/scripts/contact.js"></script>
+
+</body>
+
+</html> -->
